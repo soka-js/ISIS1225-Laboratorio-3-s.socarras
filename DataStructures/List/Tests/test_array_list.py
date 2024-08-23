@@ -11,14 +11,12 @@ def compare_from_tests(element1, element2):
         return 1
     return -1
 
-@pytest.mark.skip(reason="No implementado aun")
 def test_new_list():
     lista = setup_tests()
     assert lista["size"] == 0
     assert lista["elements"] == []
 
 
-@pytest.mark.skip(reason="No implementado aun")
 def test_add_first():
     lista = setup_tests()
 
@@ -30,7 +28,6 @@ def test_add_first():
     assert lista["elements"] == [3, 2, 1]
 
 
-@pytest.mark.skip(reason="No implementado aun")
 def test_add_last():
     lista = setup_tests()
 
@@ -42,7 +39,6 @@ def test_add_last():
     assert lista["elements"] == [1, 2, 3]
 
 
-@pytest.mark.skip(reason="No implementado aun")
 def test_is_empty():
     lista = setup_tests()
 
@@ -52,7 +48,6 @@ def test_is_empty():
     assert lt.is_empty(lista) == False
 
 
-@pytest.mark.skip(reason="No implementado aun")
 def test_get_size():
     lista = setup_tests()
 
@@ -63,7 +58,6 @@ def test_get_size():
     assert lt.size(lista) == 1
 
 
-@pytest.mark.skip(reason="No implementado aun")
 def test_get_first_element():
 
     lista = setup_tests()
@@ -74,7 +68,6 @@ def test_get_first_element():
     assert lt.first_element(lista) == 3
 
 
-@pytest.mark.skip(reason="No implementado aun")
 def test_get_last_element():
 
     lista = setup_tests()
@@ -86,7 +79,6 @@ def test_get_last_element():
     assert lt.last_element(lista) == 1
 
 
-@pytest.mark.skip(reason="No implementado aun")
 def test_get_element():
 
     lista = setup_tests()
@@ -95,12 +87,11 @@ def test_get_element():
     lt.add_first(lista, 2)
     lt.add_first(lista, 3)
 
-    assert lt.get_element(lista, 1) == 3
-    assert lt.get_element(lista, 2) == 2
-    assert lt.get_element(lista, 3) == 1
+    assert lt.get_element(lista, 0) == 3
+    assert lt.get_element(lista, 1) == 2
+    assert lt.get_element(lista, 2) == 1
 
 
-@pytest.mark.skip(reason="No implementado aun")
 def test_remove_first():
     lista = setup_tests()
 
@@ -114,7 +105,6 @@ def test_remove_first():
     assert lista["elements"] == [2, 1]
 
 
-@pytest.mark.skip(reason="No implementado aun")
 def test_remove_last():
     lista = setup_tests()
 
@@ -128,7 +118,6 @@ def test_remove_last():
     assert lista["elements"] == [3, 2]
 
 
-@pytest.mark.skip(reason="No implementado aun")
 def test_insert_element():
     lista = setup_tests()
 
@@ -136,13 +125,12 @@ def test_insert_element():
     lt.add_first(lista, 2)
     lt.add_first(lista, 3)
 
-    lt.insert_element(lista, 2, 4)
+    lt.insert_element(lista, 2, 3)
 
     assert lista["size"] == 4
     assert lista["elements"] == [3, 2, 1, 2]
 
 
-@pytest.mark.skip(reason="No implementado aun")
 def test_is_present():
     lista = setup_tests()
 
@@ -156,7 +144,6 @@ def test_is_present():
     assert lt.is_present(lista, 4, compare_from_tests) == -1
 
 
-@pytest.mark.skip(reason="No implementado aun")
 def test_delete_element():
     lista = setup_tests()
 
@@ -164,13 +151,12 @@ def test_delete_element():
     lt.add_first(lista, 2)
     lt.add_first(lista, 3)
 
-    lt.delete_element(lista, 2)
+    lt.delete_element(lista, 1)
 
     assert lista["size"] == 2
     assert lista["elements"] == [3, 1]
 
 
-@pytest.mark.skip(reason="No implementado aun")
 def test_change_info():
     lista = setup_tests()
 
@@ -178,13 +164,12 @@ def test_change_info():
     lt.add_first(lista, 2)
     lt.add_first(lista, 3)
 
-    lt.change_info(lista, 2, 4)
+    lt.change_info(lista, 1, 4)
 
     assert lista["size"] == 3
     assert lista["elements"] == [3, 4, 1]
 
 
-@pytest.mark.skip(reason="No implementado aun")
 def test_exchange():
     lista = setup_tests()
 
@@ -192,13 +177,12 @@ def test_exchange():
     lt.add_first(lista, 2)
     lt.add_first(lista, 3)
 
-    lt.exchange(lista, 1, 2)
+    lt.exchange(lista, 0, 1)
 
     assert lista["size"] == 3
     assert lista["elements"] == [2, 3, 1]
 
 
-@pytest.mark.skip(reason="No implementado aun")
 def test_sublist():
     lista = setup_tests()
 
@@ -206,7 +190,7 @@ def test_sublist():
     lt.add_first(lista, 2)
     lt.add_first(lista, 3)
 
-    sublist = lt.sub_list(lista, 1, 2)
+    sublist = lt.sub_list(lista, 0, 2)
 
     assert sublist["size"] == 2
     assert sublist["elements"] == [3, 2]
