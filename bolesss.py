@@ -1,262 +1,68 @@
-# Definition for a binary tree node.
-# class TreeNode(object):
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
 class Solution(object):
-    def kthLargestLevelSum(self, root, k):
+    def isBipartite(self, graph):
         """
-        :type root: Optional[TreeNode]
-        :type k: int
-        :rtype: int
-        """
-        mp = {}  
-        gr = -1  
-
-        def tk(r, level):
-            if r is None:
-                return
-            if level not in mp:
-                mp[level] = [r.val]
-            else:
-                mp[level].append(r.val)
-            tk(r.left, level + 1)
-            tk(r.right, level + 1)
-        
-        tk(root, 1)
-        
-        level_sums = []
-        for level in mp:
-            level_sums.append(sum(mp[level]))
-        
-        level_sums.sort(reverse=True)
-        
-        if len(level_sums) < k:
-            return -1
-        else:
-            return level_sums[k - 1]
-
-# Definition for a binary tree node.
-# class TreeNode(object):
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
-class Solution(object):
-    def isValidBST(self, root):
-        """
-        Determina si un árbol binario es un árbol de búsqueda binario (BST) válido.
-
-        :type root: Optional[TreeNode]
+        :type graph: List[List[int]]
         :rtype: bool
         """
-        self.prev = None  # Variable para mantener el valor del nodo anterior en el recorrido inorden
-        return self._inorder(root)  # Llamada al método auxiliar _inorder
+        from collections import deque
 
-    def _inorder(self, node):
-        if not node:
-            return True
+        # Diccionario para almacenar el color de cada nodo
+        color = {}
 
-        # Recorrer el subárbol izquierdo
-        if not self._inorder(node.left):
-            return False
+        for node in range(len(graph)):
+            if node not in color:
+                # Iniciar BFS desde este nodo
+                queue = deque([node])
+                color[node] = 0  # Asignar color 0 al nodo inicial
 
-        # Verificar si el valor actual es mayor que el valor previo
-        if self.prev is not None and node.val <= self.prev:
-            return False
-        self.prev = node.val  # Actualizar el valor previo
+                while queue:
+                    current = queue.popleft()
+                    for neighbor in graph[current]:
+                        if neighbor not in color:
+                            # Asignar color opuesto al del nodo actual
+                            color[neighbor] = 1 - color[current]
+                            queue.append(neighbor)
+                        else:
+                            # Si el vecino ya tiene el mismo color, no es bipartito
+                            if color[neighbor] == color[current]:
+                                return False
+        return True
 
-        # Recorrer el subárbol derecho
-        return self._inorder(node.right)
 
-
-# Definition for a binary tree node.
-# class TreeNode(object):
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
 class Solution(object):
-    def hasPathSum(self, root, targetSum):
+    def findRedundantConnection(self, edges):
         """
-        :type root: Optional[TreeNode]
-        :type targetSum: int
-        :rtype: bool
-        """
-        if root is None:
-            return False
-        if root.left is None and root.right is None:
-            return targetSum == root.val
-        remainingSum = targetSum - root.val
-        return (self.hasPathSum(root.left, remainingSum) or self.hasPathSum(root.right, remainingSum))
-    
-# Definition for a binary tree node.
-# class TreeNode(object):
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
-class Solution(object):
-    def invertTree(self, root):
-        """
-        :type root: Optional[TreeNode]
-        :rtype: Optional[TreeNode]
-        """
-        if root is None:
-            return None
-        root.left, root.right = root.right, root.left
-        self.invertTree(root.left)
-        self.invertTree(root.right)
-        return root
-    
-# Definition for a binary tree node.
-# class TreeNode(object):
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
-class Solution(object):
-    def postorderTraversal(self, root):
-        """
-        :type root: Optional[TreeNode]
+        :type edges: List[List[int]]
         :rtype: List[int]
         """
-        arr = []
-        def pos(r):
-            if r is None:
-                return
-            pos(r.left)
-            pos(r.right)
-            arr.append(r.val)
-        pos(root)
-        return arr
-
-# Definition for a binary tree node.
-# class TreeNode(object):
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
-class Solution(object):
-    def preorderTraversal(self, root):
-        """
-        :type root: Optional[TreeNode]
-        :rtype: List[int]
-        """
-        arr = []
-        def pre(r):
-            if r is None:
-                return
-            else:
-                arr.append(r.val)
-            pre(r.left)
-            pre(r.right)
+        # Número de nodos en el grafo
+        n = len(edges)
         
-        pre(root)
-        return arr
+        # Construir la lista de adyacencia
+        adj = [[] for _ in range(n + 1)]  # Los nodos están etiquetados de 1 a n
 
-# Definition for a binary tree node.
-# class TreeNode(object):
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
-class Solution(object):
-    def maxDepth(self, root):
-        """
-        :type root: Optional[TreeNode]
-        :rtype: int
-        """
-        if root is None:
-            return 0
-        else:
-            left_depth = self.maxDepth(root.left)
-            right_depth = self.maxDepth(root.right)
-            return max(left_depth, right_depth) + 1
+        for u, v in edges:
+            # Añadir aristas al grafo
+            adj[u].append(v)
+            adj[v].append(u)
+            
+            # Verificar si se crea un ciclo al agregar esta arista
+            visited = [False] * (n + 1)
+            if self.is_cyclic(u, adj, visited, -1):
+                return [u, v]
         
-# Definition for a binary tree node.
-# class TreeNode(object):
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
-class Solution(object):
-    def isSymmetric(self, root):
-        """
-        :type root: Optional[TreeNode]
-        :rtype: bool
-        """
-        arrP = []
-        def trP(root):
-            if root is None:
-                arrP.append(None)
-                return
-            arrP.append(root.val)
-            trP(root.left)
-            trP(root.right)
-        trP(root)
+        return []
 
-        arrQ = []
-        def trQ(root):
-            if root is None:
-                arrQ.append(None)
-                return
-            arrQ.append(root.val)
-            trQ(root.right)
-            trQ(root.left)
-        trQ(root)
+    def is_cyclic(self, v, adj, visited, parent):
+        # Marcar el nodo actual como visitado
+        visited[v] = True
 
-        return arrP == arrQ
-    
-# Definition for a binary tree node.
-# class TreeNode(object):
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
-class Solution(object):
-    def inorderTraversal(self, root):
-        """
-        :type root: Optional[TreeNode]
-        :rtype: List[int]
-        """
-        arr = []
-        def parce(r):
-            if r is None:
-                return
-            parce(r.left)
-            arr.append(r.val)
-            parce(r.right)
-        parce(root)
-        return arr
-    
-# Definition for a binary tree node.
-# class TreeNode(object):
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
-class Solution(object):
-    def isSameTree(self, p, q):
-        arrP = []
-        def trP(root):
-            if root is None:
-                arrP.append(None)
-                return
-            arrP.append(root.val)
-            trP(root.left)
-            trP(root.right)
-        trP(p)
+        # Recorrer los nodos adyacentes
+        for i in adj[v]:
+            if not visited[i]:
+                if self.is_cyclic(i, adj, visited, v):
+                    return True
+            elif i != parent:
+                return True
+        return False
 
-        arrQ = []
-        def trQ(root):
-            if root is None:
-                arrQ.append(None)
-                return
-            arrQ.append(root.val)
-            trQ(root.right)
-            trQ(root.left)
-        trQ(q)
-
-        return arrP == arrQ
